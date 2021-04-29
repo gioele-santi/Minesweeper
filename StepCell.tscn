@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/cell_tiles.png" type="Texture" id=1]
+[ext_resource path="res://StepCell.gd" type="Script" id=2]
+
+[node name="StepCell" type="Button"]
+margin_right = 50.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
+button_mask = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Overlay" type="Sprite" parent="."]
+position = Vector2( 24.9646, 24.5528 )
+scale = Vector2( 0.475562, 0.475562 )
+texture = ExtResource( 1 )
+hframes = 4
+vframes = 3
+frame = 4
+
+[connection signal="gui_input" from="." to="." method="_on_StepCell_gui_input"]
