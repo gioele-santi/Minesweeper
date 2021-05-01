@@ -2,6 +2,9 @@ extends Button
 
 class_name StepCell
 
+signal cell_revealed(value) # receiver can count or detect gameover
+signal cell_flagged(value) # true or false to count used flags
+
 onready var overlay := $Overlay
 var alt_cmd := false 
 var count := 0
@@ -12,31 +15,41 @@ var neighbours : Array = [] # other cells
 func _ready() -> void:
 	overlay.visible = false
 
+func reset() -> void:
+	count = 0
+	overlay.visible = false
+	disabled = false
+	flagged = false # no setter, no signal 
 
 func _pressed() -> void:
 	if alt_cmd:
 		self.flagged = not flagged
-	elif not flagged:
+	else:
 		reveal()
 
-func reveal() -> void:
+func reveal(propagate: bool = true) -> void:
+	if self.flagged or self.disabled: # avoid propagation
+		return
 	overlay.frame = count
 	overlay.visible = true
 	self.disabled = true
 	if count == 0:
-		pass #open nearby cells
-	elif count == 9:
-		pass # explode
+		for c in neighbours:
+			var cell : StepCell = c
+			cell.reveal()
+	if propagate:
+		emit_signal("cell_revealed", count)
 
 func place_mine() -> void:
 	self.count = 9
 	for c in neighbours:
-		c.count = min(9, c.count+1)
+		c.count = c.count + 1 if c.count < 9 else c.count
 
 func set_flagged(value: bool) -> void:
 	flagged = value
 	overlay.frame = 11 #flag frame
 	overlay.visible = value
+	emit_signal("cell_flagged", value)
 
 func _on_StepCell_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:

@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Control",
+"class": "GameApp",
+"language": "GDScript",
+"path": "res://Game.gd"
+}, {
 "base": "GridContainer",
 "class": "MineField",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://StepCell.gd"
 } ]
 _global_script_class_icons={
+"GameApp": "",
 "MineField": "",
 "StepCell": ""
 }

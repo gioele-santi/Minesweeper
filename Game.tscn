@@ -1,24 +1,121 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://MineField.gd" type="Script" id=1]
 [ext_resource path="res://StepCell.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/font/GUI_lbl_font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/font/smaller_font.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Game.gd" type="Script" id=5]
 
 [node name="Game" type="Control"]
+pause_mode = 2
 margin_right = 40.0
 margin_bottom = 40.0
+script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MineField" type="GridContainer" parent="."]
-anchor_left = 0.2
-anchor_top = 0.2
-anchor_right = 20.6
-anchor_bottom = 15.0
-margin_left = 216.0
-margin_top = 8.0
-margin_right = -24.0
-margin_bottom = -8.00006
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 60.0
+margin_top = 20.0
+margin_right = 390.0
+margin_bottom = 576.0
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Controls" type="VBoxContainer" parent="HBoxContainer"]
+margin_right = 310.0
+margin_bottom = 401.0
+size_flags_vertical = 0
+custom_constants/separation = 29
+alignment = 1
+
+[node name="Title" type="Label" parent="HBoxContainer/Controls"]
+margin_right = 310.0
+margin_bottom = 117.0
+rect_min_size = Vector2( 310, 0 )
+custom_fonts/font = ExtResource( 3 )
+text = "Mine sweeper"
+align = 1
+autowrap = true
+
+[node name="Message" type="Label" parent="HBoxContainer/Controls"]
+margin_top = 146.0
+margin_right = 310.0
+margin_bottom = 184.0
+custom_fonts/font = ExtResource( 4 )
+text = "Let's play"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartButton" type="Button" parent="HBoxContainer/Controls"]
+margin_top = 213.0
+margin_right = 310.0
+margin_bottom = 257.0
+custom_fonts/font = ExtResource( 4 )
+text = "New Game"
+
+[node name="MineSettings" type="HBoxContainer" parent="HBoxContainer/Controls"]
+margin_left = 54.0
+margin_top = 286.0
+margin_right = 256.0
+margin_bottom = 334.0
+size_flags_horizontal = 4
+
+[node name="MinusBtn" type="Button" parent="HBoxContainer/Controls/MineSettings"]
+margin_right = 44.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 44, 44 )
+custom_fonts/font = ExtResource( 4 )
+text = "-"
+flat = true
+align = 2
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/Controls/MineSettings"]
+margin_left = 48.0
+margin_right = 154.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 80, 0 )
+custom_fonts/font = ExtResource( 4 )
+text = "10"
+align = 1
+
+[node name="PlusBtn" type="Button" parent="HBoxContainer/Controls/MineSettings"]
+margin_left = 158.0
+margin_right = 202.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 44, 44 )
+custom_fonts/font = ExtResource( 4 )
+text = "+"
+flat = true
+align = 2
+
+[node name="FlagCounter" type="HBoxContainer" parent="HBoxContainer/Controls"]
+margin_left = 113.0
+margin_top = 363.0
+margin_right = 197.0
+margin_bottom = 401.0
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="HBoxContainer/Controls/FlagCounter"]
+margin_right = 84.0
+margin_bottom = 38.0
+custom_fonts/font = ExtResource( 4 )
+text = "000"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MineField" type="GridContainer" parent="HBoxContainer"]
+pause_mode = 1
+margin_left = 330.0
+margin_right = 330.0
+margin_bottom = 556.0
 custom_constants/vseparation = 8
 custom_constants/hseparation = 8
 columns = 10
@@ -28,3 +125,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 CellScene = ExtResource( 2 )
+
+[connection signal="pressed" from="HBoxContainer/Controls/StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/Controls/MineSettings/MinusBtn" to="." method="_on_MinusBtn_pressed"]
+[connection signal="text_entered" from="HBoxContainer/Controls/MineSettings/LineEdit" to="." method="_on_Mine_text_entered"]
+[connection signal="pressed" from="HBoxContainer/Controls/MineSettings/PlusBtn" to="." method="_on_PlusBtn_pressed"]
